@@ -9,3 +9,96 @@
 - tomcat
 
 ### 二、项目描述
+
+---
+
+
+
+
+
+### 三、功能需求
+
+---
+
+> **java-Controller**
+>
+> > `com.webturing.noshop.controller`的`list(Model model)`方法中，通过`categoryService.list()`获取所有`Category`对象，放在`cs`，并服务端跳转`admin/listCategory.jsp`文件。
+>
+> **Resources**
+>
+> > `CategoryMapper.xml`声明sql语句，逆序查询category对象。
+> >
+> > `log4j.properties`开启日志(查看mybatis运行，以及sql信息)
+> >
+> > `jdbc.propertiex`配置数据库
+> >
+> > `applicationContext.xml`: 
+> >
+> > + 配置相应数据源```<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">```
+> >
+> > + 配置Mybatis的SessionFactory```<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">```
+> >
+> > + Mapper类扫描
+> > ```xml
+> > <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+> > ```
+> >
+> > `springMVC.xml`:
+> >
+> > + 开启静态资源访问，防止访问时出错`<mvc:default-servlet-handler/>`
+> >
+> > + 视图定位到/WEB-INF/JSP/*.jsp
+> >
+> > ```xml
+> > <bean
+> >      class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+> >    <property name="viewClass"
+> >              value="org.springframework.web.servlet.view.JstlView" />
+> >    <property name="prefix" value="/WEB-INF/jsp/" />
+> >    <property name="suffix" value=".jsp" />
+> > </bean>
+> > ```
+> >
+> > + 解析上传的文件
+> >
+> > ```xml
+> > <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+> > ```
+> > 
+>
+> **webapp**
+>
+> > `web.xml`:
+> >
+> > + 指定spring配置文件为classpath下的applicationContext.xml
+> >
+> > ```xml
+> > <context-param>
+> >    <param-name>contextConfigLocation</param-name>
+> >    <param-value>classpath:applicationContext.xml</param-value>
+> > </context-param>
+> > ```
+> >
+> > + 指定springMVC配置文件
+> > + 中文过滤
+> >
+> > 
+> >
+> > 各种css, img, js文件
+> >
+> > 
+> >
+> > admin目录
+> >
+> > + `index.jsp`跳转到`CategoryController`中指定`admin_category_list`
+> >
+> >   
+> >
+> > WEB-INF/jsp/include/admin目录四个公用jsp文件
+> >
+> > ![1593681728903](C:\Users\12157\AppData\Roaming\Typora\typora-user-images\1593681728903.png)
+> >
+> > + //TODO 四个jsp文件的包含关系
+> >
+> > 
+
