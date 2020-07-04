@@ -20,6 +20,8 @@
 
 ---
 
+#### 后台原型（src/main/java）
+
 > **java-Controller**
 >
 > > `com.webturing.noshop.controller`的`list(Model model)`方法中，通过`categoryService.list()`获取所有`Category`对象，放在`cs`，并服务端跳转`admin/listCategory.jsp`文件。
@@ -66,6 +68,8 @@
 > > ```
 > > 
 >
+#### webapp
+
 > **webapp**
 >
 > > `web.xml`:
@@ -74,8 +78,8 @@
 > >
 > > ```xml
 > > <context-param>
-> >    <param-name>contextConfigLocation</param-name>
-> >    <param-value>classpath:applicationContext.xml</param-value>
+> > <param-name>contextConfigLocation</param-name>
+> > <param-value>classpath:applicationContext.xml</param-value>
 > > </context-param>
 > > ```
 > >
@@ -84,21 +88,32 @@
 > >
 > > 
 > >
-> > 各种css, img, js文件
+> > ### 静态资源
 > >
-> > 
+> > ##### CSS
 > >
-> > admin目录
+> > > - /back
+> > >
+> > >   含有style.css为后台前端页面样式
+> > >
+> > > - /bootstrap
+> > >
+> > >   bootstrap的css样式文件
 > >
-> > + `index.jsp`跳转到`CategoryController`中指定`admin_category_list`
+> > ##### JS
 > >
-> >   
-> >
-> > WEB-INF/jsp/include/admin目录四个公用jsp文件
-> >
-> > ![1593681728903](C:\Users\12157\AppData\Roaming\Typora\typora-user-images\1593681728903.png)
-> >
-> > + //TODO 四个jsp文件的包含关系
+> > > + /bootstrap
+> > >
+> > >   bootstrap的js文件
+> > >
+> > > + /JQuery
+> > >
+> > >   JQuery的js文件
 > >
 > > 
 
+#### Resources
+
+>
+>
+>

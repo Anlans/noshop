@@ -17,10 +17,10 @@ public class CategoryController {
     CategoryService categoryService;
 
     //映射其路径访问
-    @RequestMapping("admin_category_list")
-    public String list(Model model) {
-        List<Category> cs = categoryService.list();
-        model.addAllAttributes("cs", cs);
-        return  "admin/listCategory";
-    }
+//    @RequestMapping("admin_category_list")
+//    public String list(Model model) {
+//        List<Category> cs = categoryService.list();
+//        model.addAllAttributes("cs", cs);
+//        return  "admin/listCategory";
+//    }
 }
