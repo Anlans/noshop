@@ -14,7 +14,7 @@
     <div class="listDataTableDiv">
         <table class="table table-striped table-bordered table-condensed table-hover">
             <thead>
-            <th>ID</th>
+            <th>ID</th>glyphicon
             <th>图片</th>
             <th>分类名称</th>
             <th>属性管理</th>
@@ -35,6 +35,7 @@
                     <td><a href="admin_property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
                     <td><a href="admin_product_list?cid=${c.id}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                     <td><a href="admin_category_edit?id=${c.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
+                    <!-- TODO 实现删除逻辑 -->
                     <td><a deleteLink="true" href="admin_category_delete?id=${c.id}"><span class="   glyphicon glyphicon-trash"></span></a></td>
 
                 </tr>
@@ -43,6 +44,36 @@
         </table>
     </div>
 
+
+    <div class="panel panel-warning addDiv">
+        <div class="panel-heading">新增分类</div>
+        <div class="panel-body">
+            <form method="post" id="addForm" action="admin_category_add" enctype="multipart/form-data">
+                <table class="addTable">
+
+                    <tr>
+                        <td>分类名称</td>
+                        <td><input  id="name" name="name" type="text" class="form-control"></td>
+                    </tr>
+
+                    <tr>
+                        <td>分类图片</td>
+                        <td>
+                            <input id="categoryPic" accept="image/*" type="file" name="image" />
+                        </td>
+                    </tr>
+
+                    <!-- TODO 实现提交增加逻辑 -->
+                    <tr class="submitTR">
+                        <td colspan="2" align="center">
+                            <button type="submit" class="btn btn-success">提 交</button>
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+    </div>
 
 
 

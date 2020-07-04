@@ -42,14 +42,16 @@
                   value="20" />
     </bean>
 
+    <!-- 关联CategoryMapper和CategoryMapper.xml -->
     <!--Mybatis的SessionFactory配置-->
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="typeAliasesPackage" value="com.webturing.noshop.pojo" />
         <property name="dataSource" ref="dataSource"/>
+        <!-- 扫描CategoryMapper.xml配置文件 -->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
 
-    <!--Mybatis的Mapper文件识别-->
+    <!--Mybatis的Mapper文件识别 CategoryMapper类-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.webturing.noshop.mapper"/>
     </bean>

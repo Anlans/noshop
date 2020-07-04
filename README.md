@@ -12,7 +12,7 @@
 
 ---
 
-
+![UML2](C:\Users\12157\Desktop\UML2.png)
 
 
 
@@ -76,11 +76,15 @@
 >>
 >> #### /admin 重定向导航页
 >>
->> #### img 图片资源
+>> 
+>>
+>> #### /img 图片资源
+>>
+>> 
 >>
 >> #### /jsp/admin/listCategory.jsp
 >>
->> ###### 引入bootstrap、后台样式style.css、jquery
+>> + **引入bootstrap、后台样式style.css、jquery**
 >>
 >> ```jsp
 >> <script src="js/jquery/2.0.0/jquery.min.js"></script>
@@ -88,7 +92,26 @@
 >> <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
 >> <link href="css/back/style.css" rel="stylesheet">
 >> ```
->> 123
+>> + 遍历cs对象内容并显示
+>>
+>> ```jsp
+>> <c:forEach items="${cs}" var="c">
+>> 
+>>     <tr>
+>>         <td>${c.id}</td>
+>>         <td><img height="40px" src="img/category/${c.id}.jpg"></td>
+>>         <td>${c.name}</td>
+>> 
+>>         <td><a href="admin_property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
+>>         <td><a href="admin_product_list?cid=${c.id}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+>>         <td><a href="admin_category_edit?id=${c.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
+>>         <td><a deleteLink="true" href="admin_category_delete?id=${c.id}"><span class="   glyphicon glyphicon-trash"></span></a></td>
+>> 
+>>     </tr>
+>> </c:forEach>
+>> ```
+>> + 123
+>> + 123
 
 #### Resources
 
@@ -140,8 +163,8 @@
 > > class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 > > <property name="viewClass"
 > >        value="org.springframework.web.servlet.view.JstlView" />
-> > <property name="prefix" value="/WEB-INF/jsp/" />
-> > <property name="suffix" value=".jsp" />
+> >     <property name="prefix" value="/WEB-INF/jsp/" />
+> >     <property name="suffix" value=".jsp" />
 > > </bean>
 > > ```
 > >
