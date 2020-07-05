@@ -7,9 +7,9 @@
 <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
 <link href="css/back/style.css" rel="stylesheet">
 
+<!-- 增加监听 -->
 <script>
     $(function(){
-
         $("#addForm").submit(function(){
             if(!checkEmpty("name","分类名称"))
                 return false;
@@ -18,7 +18,22 @@
             return true;
         });
     });
+</script>
+<!-- 删除监听 -->
+<script>
+    $(function(){
+        $("a").click(function(){
+            var deleteLink = $(this).attr("deleteLink");
+            console.log(deleteLink);
+            if("true"==deleteLink){
+                var confirmDelete = confirm("确认要删除");
+                if(confirmDelete)
+                    return true;
+                return false;
 
+            }
+        });
+    })
 </script>
 
 <div class="workingArea">
