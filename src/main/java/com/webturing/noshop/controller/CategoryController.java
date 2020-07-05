@@ -47,5 +47,4 @@ public class CategoryController {
         ImageIO.write(img, "jpg", file);
         return "redirect:/admin_category_list";
     }
-
 }
