@@ -7,6 +7,20 @@
 <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
 <link href="css/back/style.css" rel="stylesheet">
 
+<script>
+    $(function(){
+
+        $("#addForm").submit(function(){
+            if(!checkEmpty("name","分类名称"))
+                return false;
+            if(!checkEmpty("categoryPic","分类图片"))
+                return false;
+            return true;
+        });
+    });
+
+</script>
+
 <div class="workingArea">
     <br>
     <br>
@@ -51,10 +65,11 @@
         <%@include file="../include/admin/adminPage.jsp" %>
     </div>
 
-
+    <!-- TODO 实现增加分类逻辑 -->
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
+            <!-- 上传表单 -->
             <form method="post" id="addForm" action="admin_category_add" enctype="multipart/form-data">
                 <table class="addTable">
 

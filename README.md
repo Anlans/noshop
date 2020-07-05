@@ -64,8 +64,76 @@
 > ```java
 > @RequestMapping("admin_category_list")
 > public String list(Model model, Page page){
->     ...
->     return "admin/listCategory";
+>  ...
+>  return "admin/listCategory";
+> }
+> ```
+>
+> + add方法的实现
+>
+> 1. 映射路径admin_category_add
+>
+> 2. 参数
+>
+>    + Category c接受页面提交的分类名称
+>
+>    + HttpSession session 用于获取当前路径
+>    + UploadedImageFile uploadedImageFile用于接收上传图片
+>
+> ```java
+> public String add(
+>     Category c, 
+>     HttpSession session, 
+>     UploadedImageFile uploadedImageFile) throws IOException {...}
+> ```
+>
+> 3. 通过session获取ServletContext,再通过getRealPath定位存放分类图片的路径。
+>
+> ```java
+> File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
+> ```
+>
+> 4. 根据分类id创建文件名
+>
+> ```java
+> File file = new File(imageFolder,c.getId()+".jpg");
+> ```
+>
+> 5. 如果/img/category目录不存在，则创建该目录
+>
+> ``` java
+> if(!file.getParentFile().exists())
+>     file.getParentFile().mkdirs();
+> ```
+>
+> 6. 通过UploadedImageFile 把浏览器传递过来的图片保存在上述指定的位置
+>
+> ```java
+> uploadedImageFile.getImage().transferTo(file);
+> ```
+>
+> 7. 通过ImageUtil.change2jpg(file); 确保图片格式一定是jpg，而不仅仅是后缀名是jpg
+>
+> ```java
+> BufferedImage img = ImageUtil.change2jpg(file);
+> ImageIO.write(img, "jpg", file);
+> ```
+>
+> 8. 跳转admin_category_list
+>
+> ```java
+> @RequestMapping("admin_category_add")
+> public String add(Category c, HttpSession session, UploadedImageFile uploadedImageFile) throws IOException {
+>     categoryService.add(c);
+>     File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
+>     File file = new File(imageFolder,c.getId()+".jpg");
+>     if(!file.getParentFile().exists())
+>         file.getParentFile().mkdirs();
+>     uploadedImageFile.getImage().transferTo(file);
+>     BufferedImage img = ImageUtil.change2jpg(file);
+>     ImageIO.write(img, "jpg", file);
+>     
+>     return "redirect:/admin_category_list";
 > }
 > ```
 >
@@ -88,41 +156,41 @@
 >
 > ```java
 > public int getTotalPage(){
->  int totalPage;
->  // 假设总数是50，是能够被5整除的，那么就有10页
->  if (0 == total % count)
->  totalPage = total /count;
->  // 假设总数是51，不能够被5整除的，那么就有11页
->  else
->  totalPage = total / count + 1;
+> int totalPage;
+> // 假设总数是50，是能够被5整除的，那么就有10页
+> if (0 == total % count)
+> totalPage = total /count;
+> // 假设总数是51，不能够被5整除的，那么就有11页
+> else
+> totalPage = total / count + 1;
 > 
->  if(0==totalPage)
->  totalPage = 1;
->  return totalPage;
+> if(0==totalPage)
+> totalPage = 1;
+> return totalPage;
 > }
 > ```
 >   + 计算最后一页数据条数
 >
 > ```java
 > public int getLast(){
->  int last;
->  // 假设总数是50，是能够被5整除的，那么最后一页的开始就是45
->  if (0 == total % count)
->  	last = total - count;
->  // 假设总数是51，不能够被5整除的，那么最后一页的开始就是50
->   else
->  	last = total - total % count;
->  last = last<0?0:last;
->   return last;
+> int last;
+> // 假设总数是50，是能够被5整除的，那么最后一页的开始就是45
+> if (0 == total % count)
+> 	last = total - count;
+> // 假设总数是51，不能够被5整除的，那么最后一页的开始就是50
+> else
+> 	last = total - total % count;
+> last = last<0?0:last;
+> return last;
 > }
 > ```
 > + 判断是否有前一页
 >
 > ``` java
 > public boolean isHasPreviouse(){
->  if(start==0)
->   return false;
->  return true;
+> if(start==0)
+> return false;
+> return true;
 > }
 > ```
 >
@@ -130,20 +198,49 @@
 >
 > ```java
 > public boolean isHasNext(){
->  if(start==getLast())
->   return false;
->  return true;
+> if(start==getLast())
+> return false;
+> return true;
 > }
 > ```
 > + 在listCategory.jsp中用到的param参数
 > ```java
 > public String getParam() {
->   return param;
+> return param;
 > }
 > public void setParam(String param) {
->   this.param = param;
+> this.param = param;
 > }
 > ```
+> 
+>
+> > UploadedImageFile.java
+>
+> + MultipartFile 类型的属性,用于接受上传文件的注入。(已经在listCategory.js中创建了上传表单)
+>
+> ```java
+> public class UploadedImageFile {
+>     MultipartFile image;
+>   
+>     public MultipartFile getImage() {
+>         return image;
+>     }
+>   
+>     public void setImage(MultipartFile image) {
+>         this.image = image;
+>     }
+>     
+> }
+> ```
+>
+> 
+>
+> > ImageUtil.java工具类用来处理图片
+>
+> ```java
+> 直接拿着用
+> ```
+>
 > 
 
 
@@ -212,6 +309,24 @@
 >
 ></tr>
 ></c:forEach>
+>```
+>
+>+ 对分类名称和分类图片做了为空判断，当为空的时候，不能提交
+>
+>```jsp
+><script>
+>    $(function(){
+>
+>        $("#addForm").submit(function(){
+>            if(!checkEmpty("name","分类名称"))
+>                return false;
+>            if(!checkEmpty("categoryPic","分类图片"))
+>                return false;
+>            return true;
+>        });
+>    });
+>
+></script>
 >```
 >
 >
@@ -377,6 +492,15 @@
 > > </select>
 > > ```
 > >
+> > + 插入分类
+> >
+> > ```xml
+> > <insert id="add"  keyProperty="id"  useGeneratedKeys="true" parameterType="Category" >
+> >     insert into category ( name ) values (#{name})
+> > </insert>
+> > ```
+> >
+> > 
 >
 > 
 >
