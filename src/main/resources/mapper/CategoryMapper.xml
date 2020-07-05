@@ -16,5 +16,4 @@
     <select id="total" resultType="int">
         select count(*) from category
     </select>
-
 </mapper>
