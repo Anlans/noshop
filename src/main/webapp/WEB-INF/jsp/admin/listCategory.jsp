@@ -14,7 +14,7 @@
     <div class="listDataTableDiv">
         <table class="table table-striped table-bordered table-condensed table-hover">
             <thead>
-            <th>ID</th>glyphicon
+            <th>ID</th>
             <th>图片</th>
             <th>分类名称</th>
             <th>属性管理</th>
@@ -31,9 +31,11 @@
                     <td>${c.id}</td>
                     <td><img height="40px" src="img/category/${c.id}.jpg"></td>
                     <td>${c.name}</td>
-
+                    <!-- TODO 实现属性管理逻辑-->
                     <td><a href="admin_property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
+                    <!-- TODO 实现产品管理逻辑-->
                     <td><a href="admin_product_list?cid=${c.id}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+                    <!-- TODO 实现编辑逻辑-->
                     <td><a href="admin_category_edit?id=${c.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
                     <!-- TODO 实现删除逻辑 -->
                     <td><a deleteLink="true" href="admin_category_delete?id=${c.id}"><span class="   glyphicon glyphicon-trash"></span></a></td>
@@ -42,6 +44,11 @@
             </c:forEach>
             </tbody>
         </table>
+    </div>
+
+    <!-- TODO 添加分页功能 -->
+    <div class="pageDiv">
+        <%@include file="../include/admin/adminPage.jsp" %>
     </div>
 
 

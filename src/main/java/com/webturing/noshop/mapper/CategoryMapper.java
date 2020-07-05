@@ -1,9 +1,12 @@
 package com.webturing.noshop.mapper;
 
 import com.webturing.noshop.pojo.Category;
+import com.webturing.noshop.util.Page;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-
 public interface CategoryMapper {
-    List<Category> list();
+    public List<Category> list(Page page);
+
+    public int total();
 }
