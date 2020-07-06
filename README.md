@@ -37,111 +37,138 @@
 
 > #### pojo
 >
-> > Category.java实体类声明id、name，对于setter、getter
+> > `Category.java`实体类声明id、name，对于setter、getter
 >
 > 
 >
 > #### mapper
 >
-> > CategoryMapper.java接口，查询使用
+> > `CategoryMapper.java`接口，查询使用
 >
 > 
 >
 > #### service
 >
-> > CategoryService.java接口，查询使用
+> > `CategoryService.java`接口，查询使用
 > >
-> > CategoryServiceImpl.java实现类
+> > `CategoryServiceImpl.java`实现类
 >
 > 
 >
 > #### controller
 >
-> > CategoryController.java类
+> > `CategoryController.java`类
 >
-> + 由CategoryController处理/admin_category_list页面从而跳转listCategory.jsp文件
+> + 由`CategoryController`处理`/admin_category_list`页面从而跳转`listCategory.jsp`文件
 >
 > ```java
 > @RequestMapping("admin_category_list")
 > public String list(Model model, Page page){
->  ...
->  return "admin/listCategory";
+> ...
+> return "admin/listCategory";
 > }
 > ```
 >
 > + add方法的实现
 >
-> 1. 映射路径admin_category_add
+> 1. 映射路径`admin_category_add`
 >
 > 2. 参数
 >
->    + Category c接受页面提交的分类名称
+>    + `Category c`接受页面提交的分类名称
 >
->    + HttpSession session 用于获取当前路径
->    + UploadedImageFile uploadedImageFile用于接收上传图片
+>    + `HttpSession session` 用于获取当前路径
+>    + `UploadedImageFile uploadedImageFile`用于接收上传图片
 >
 > ```java
 > public String add(
->     Category c, 
->     HttpSession session, 
->     UploadedImageFile uploadedImageFile) throws IOException {...}
+>  Category c, 
+>  HttpSession session, 
+>  UploadedImageFile uploadedImageFile) throws IOException {...}
 > ```
 >
-> 3. 通过session获取ServletContext,再通过getRealPath定位存放分类图片的路径。
+> 3. 通过`session`获取`ServletContext`,再通过getRealPath定位存放分类图片的路径。
 >
 > ```java
 > File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
 > ```
 >
-> 4. 根据分类id创建文件名
+> 4. 根据分类`id`创建文件名
 >
 > ```java
 > File file = new File(imageFolder,c.getId()+".jpg");
 > ```
 >
-> 5. 如果/img/category目录不存在，则创建该目录
+> 5. 如果`/img/category`目录不存在，则创建该目录
 >
 > ``` java
 > if(!file.getParentFile().exists())
->     file.getParentFile().mkdirs();
+>  file.getParentFile().mkdirs();
 > ```
 >
-> 6. 通过UploadedImageFile 把浏览器传递过来的图片保存在上述指定的位置
+> 6. 通过`UploadedImageFile` 把浏览器传递过来的图片保存在上述指定的位置
 >
 > ```java
 > uploadedImageFile.getImage().transferTo(file);
 > ```
 >
-> 7. 通过ImageUtil.change2jpg(file); 确保图片格式一定是jpg，而不仅仅是后缀名是jpg
+> 7. 通过`ImageUtil.change2jpg(file);` 确保图片格式一定是jpg，而不仅仅是后缀名是jpg
 >
 > ```java
 > BufferedImage img = ImageUtil.change2jpg(file);
 > ImageIO.write(img, "jpg", file);
 > ```
 >
-> 8. 跳转admin_category_list
+> 8. 跳转`admin_category_list`
 >
 > ```java
 > @RequestMapping("admin_category_add")
 > public String add(Category c, HttpSession session, UploadedImageFile uploadedImageFile) throws IOException {
->     categoryService.add(c);
->     File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
->     File file = new File(imageFolder,c.getId()+".jpg");
->     if(!file.getParentFile().exists())
->         file.getParentFile().mkdirs();
->     uploadedImageFile.getImage().transferTo(file);
->     BufferedImage img = ImageUtil.change2jpg(file);
->     ImageIO.write(img, "jpg", file);
->     
->     return "redirect:/admin_category_list";
+>  categoryService.add(c);
+>  File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
+>  File file = new File(imageFolder,c.getId()+".jpg");
+>  if(!file.getParentFile().exists())
+>      file.getParentFile().mkdirs();
+>  uploadedImageFile.getImage().transferTo(file);
+>  BufferedImage img = ImageUtil.change2jpg(file);
+>  ImageIO.write(img, "jpg", file);
+>  
+>  return "redirect:/admin_category_list";
 > }
+> ```
+>
+> + 删除方法的实现
+>
+> 1. 映射`admin_category_delete`
+>
+> ```java
+> @RequestMapping("admin_category_delete")
+> ```
+>
+> 2. 提供`id`注入
+>
+> ```java
+> public String delete(int id,HttpSession session) {
+>     categoryService.delete(id);
+>     ...
+> }
+> ```
+>
+> 3. `session`定位文件位置,`categoryService`删除数据,删除图片
+>
+> ```java
+> File  imageFolder= new File(session.getServletContext().getRealPath("img/category"));
+> File file = new File(imageFolder,id+".jpg");
+> file.delete();
+> 
+> return "redirect:/admin_category_list";
 > ```
 >
 > 
 >
 > #### util
 >
-> > Page.java分页(基于查询)
+> > `Page.java`分页(基于查询)
 > + 相应参数
 >
 > ```java
@@ -152,7 +179,7 @@
 > private static final int defaultCount = 5; //默认每页显示5条
 > ```
 >
-> + 根据每页显示count以及数据条数total计算总页数
+> + 根据每页显示`count`以及数据条数`total`计算总页数
 >
 > ```java
 > public int getTotalPage(){
@@ -203,7 +230,7 @@
 > return true;
 > }
 > ```
-> + 在listCategory.jsp中用到的param参数
+> + 在`listCategory.jsp`中用到的`param`参数
 > ```java
 > public String getParam() {
 > return param;
@@ -212,30 +239,30 @@
 > this.param = param;
 > }
 > ```
-> 
 >
-> > UploadedImageFile.java
 >
-> + MultipartFile 类型的属性,用于接受上传文件的注入。(已经在listCategory.js中创建了上传表单)
+> > `UploadedImageFile.java`
+>
+> + `MultipartFile` 类型的属性,用于接受上传文件的注入。(已经在`listCategory.js`中创建了上传表单)
 >
 > ```java
 > public class UploadedImageFile {
->     MultipartFile image;
->   
->     public MultipartFile getImage() {
->         return image;
->     }
->   
->     public void setImage(MultipartFile image) {
->         this.image = image;
->     }
->     
+>  MultipartFile image;
+> 
+>  public MultipartFile getImage() {
+>      return image;
+>  }
+> 
+>  public void setImage(MultipartFile image) {
+>      this.image = image;
+>  }
+>  
 > }
 > ```
 >
 > 
 >
-> > ImageUtil.java工具类用来处理图片
+> > `ImageUtil.java`工具类用来处理图片
 >
 > ```java
 > 直接拿着用
@@ -315,18 +342,36 @@
 >
 >```jsp
 ><script>
->    $(function(){
+>$(function(){
 >
->        $("#addForm").submit(function(){
->            if(!checkEmpty("name","分类名称"))
->                return false;
->            if(!checkEmpty("categoryPic","分类图片"))
->                return false;
->            return true;
->        });
->    });
+>   $("#addForm").submit(function(){
+>       if(!checkEmpty("name","分类名称"))
+>           return false;
+>       if(!checkEmpty("categoryPic","分类图片"))
+>           return false;
+>       return true;
+>   });
+>});
 >
 ></script>
+>```
+>
+>+ 删除监听
+>
+>```jsp
+>$(function(){
+>    $("a").click(function(){
+>        var deleteLink = $(this).attr("deleteLink");
+>        console.log(deleteLink);
+>        if("true"==deleteLink){
+>            var confirmDelete = confirm("确认要删除");
+>            if(confirmDelete)
+>                return true;
+>            return false;
+>             
+>        }
+>    });
+>})
 >```
 >
 >
@@ -349,7 +394,7 @@
 >
 >+ 分页显示界面
 >
->通过CategoryController向前台admin.jsp传递的page对象控制分页，用bootstrap分页效果制作,同时使用CategoryMapper.xml的分页语句`limit #{start},#{count}`获取参数
+>  通过`CategoryController`向前台`adminPage.jsp`传递的`page`对象控制分页，用`bootstrap`分页效果制作,同时使用`CategoryMapper.xml`的分页语句`limit #{start},#{count}`获取参数
 >
 >1.首页
 >
@@ -404,17 +449,17 @@
 >
 >
 >
->##### /web.xml
+>> ##### /web.xml
 >
->1.指定spring的配置文件为classpath下的applicationContext.xml
+>1.指定spring的配置文件为classpath下的`applicationContext.xml`
 >
 >```xml
 ><context-param>
->    <param-name>contextConfigLocation</param-name>
->    <param-value>classpath:applicationContext.xml</param-value>
+><param-name>contextConfigLocation</param-name>
+><param-value>classpath:applicationContext.xml</param-value>
 ></context-param>
 ><listener>
->    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+><listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 ></listener>
 >```
 >
@@ -424,16 +469,16 @@
 >
 >```xml
 ><filter>
->    <filter-name>CharacterEncodingFilter</filter-name>
->    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
->    <init-param>
->        <param-name>encoding</param-name>
->        <param-value>utf-8</param-value>
->    </init-param>
+><filter-name>CharacterEncodingFilter</filter-name>
+><filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+><init-param>
+>   <param-name>encoding</param-name>
+>   <param-value>utf-8</param-value>
+></init-param>
 ></filter>
 ><filter-mapping>
->    <filter-name>CharacterEncodingFilter</filter-name>
->    <url-pattern>/*</url-pattern>
+><filter-name>CharacterEncodingFilter</filter-name>
+><url-pattern>/*</url-pattern>
 ></filter-mapping>
 >```
 >
@@ -444,18 +489,18 @@
 >```xml
 ><!-- spring mvc核心：分发servlet -->
 ><servlet>
->    <servlet-name>mvc-dispatcher</servlet-name>
->    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
->    <!-- spring mvc的配置文件 -->
->    <init-param>
->        <param-name>contextConfigLocation</param-name>
->        <param-value>classpath:springMVC.xml</param-value>
->    </init-param>
->    <load-on-startup>1</load-on-startup>
+><servlet-name>mvc-dispatcher</servlet-name>
+><servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+><!-- spring mvc的配置文件 -->
+><init-param>
+>   <param-name>contextConfigLocation</param-name>
+>   <param-value>classpath:springMVC.xml</param-value>
+></init-param>
+><load-on-startup>1</load-on-startup>
 ></servlet>
 ><servlet-mapping>
->    <servlet-name>mvc-dispatcher</servlet-name>
->    <url-pattern>/</url-pattern>
+><servlet-name>mvc-dispatcher</servlet-name>
+><url-pattern>/</url-pattern>
 ></servlet-mapping>
 >```
 >
@@ -463,7 +508,7 @@
 
 #### Resources
 
-> #####/mapper
+> ##### /mapper
 >
 > > `CategoryMapper.xml`
 > >
@@ -496,8 +541,16 @@
 > >
 > > ```xml
 > > <insert id="add"  keyProperty="id"  useGeneratedKeys="true" parameterType="Category" >
-> >     insert into category ( name ) values (#{name})
+> >  insert into category ( name ) values (#{name})
 > > </insert>
+> > ```
+> >
+> > + 删除
+> >
+> > ```xml
+> > <delete id="delete">
+> >     delete from category where id= #{id}
+> > </delete>
 > > ```
 > >
 > > 
