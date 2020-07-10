@@ -6,7 +6,7 @@
 
 - IDEA2019
 - Navicat
-- tomcat
+- Typora
 
 ---
 
@@ -16,14 +16,21 @@
 
 #### Tmall后台简化版本
 
-##### 第一阶段功能：显示出后台页面![UML2](C:\Users\12157\Desktop\UML2.png)
+##### 第一阶段功能：显示出后台页面
 
-##### 第二阶段功能：
+![UML](https://i.loli.net/2020/07/10/hYykTS7mc3KsZOz.png)
 
-- **添加分页功能**
+##### 第二阶段功能：添加基本功能
 
-- **添加删除功能**
-- **添加管理功能**
+- **添加分页功能**✔
+- **添加删除功能**✔
+- **添加管理功能**✔
+
+
+
+#####  第三阶段优化：
+
++ **修复分页面nav中当前第一页仍可以点击前一页**
 
 ---
 
@@ -272,6 +279,8 @@
 
 
 
+
+
 #### webapp
 
 >#### admin
@@ -506,6 +515,10 @@
 >
 >
 
+
+
+
+
 #### Resources
 
 > ##### /mapper
@@ -628,5 +641,46 @@
 > ><bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 > > ```
 > >
-> > 
 >
+
+
+
+
+
+#### SQL建表语句
+
+> - 创建数据库: tmall_ssm
+
+```sql
+CREATE DATABASE tmall_ssm DEFAULT CHARACTER SET utf8;
+```
+
+> - 分类表
+
+```sql
+CREATE TABLE category (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name varchar(255) DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+```
+**category表**
+
+| 名   | 类型    | 长度    | 小数点 | 不是null | 键   |
+| ---- | ------- | ------- | ------ | -------- | ---- |
+| id   | int     | int     | 11     | ☑        | 🔑    |
+| name | varchar | varchar | 255    | ☐        |      |
+
+
+
+---
+
+### 四、代码之外
+
+---
+
+开发文档使用Typora书写，UML使用Processon绘画。
+
+此文档以每个目录分类，再以每个文件展开说明相应参数和逻辑。
+
+https://github.com/Anlans/noshop
